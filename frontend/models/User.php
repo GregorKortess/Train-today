@@ -38,6 +38,7 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
+    const DEFAULT_PICTURE = '/img/default.png';
 
 
     /**
@@ -228,6 +229,6 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function getPicture()
     {
-        return ($this->picture) ? Yii::$app->storage->getFile($this->picture) : Yii::$app->storage->getFile($this->picture);
+        return ($this->picture) ? Yii::$app->storage->getFile($this->picture) : self::DEFAULT_PICTURE;
     }
 }

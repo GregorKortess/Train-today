@@ -9,9 +9,14 @@ use yii\helpers\HtmlPurifier;
 use dosamigos\fileupload\FileUpload;
 
 ?>
+
+<div class="alert alert-success display-none" id="profile-image-success">Profile image updated</div>
+<div class="alert alert-danger display-none" id="profile-image-fail"></div>
+
 <div class="col-sm-5">
 
-    <img src="<?php echo $user->getPicture(); ?>" width="150" height="200" alt="mongol">
+    <img src="<?php echo $user->getPicture(); ?>" width="150" height="200" alt="mongol" id="profile-picture">
+
 
     <div class="pull-right">
     <p style="font-weight: bold" class="text-danger text-nowrap"> <?php echo Html::encode($user->username); ?> <button class="btn btn-default">Редактировать профиль</button></p>
@@ -61,13 +66,16 @@ use dosamigos\fileupload\FileUpload;
     // see: https://github.com/blueimp/jQuery-File-Upload/wiki/Options#processing-callback-options
     'clientEvents' => [
         'fileuploaddone' => 'function(e, data) {
-                                console.log(e);
-                                console.log(data);
-                            }',
-        'fileuploadfail' => 'function(e, data) {
-                                console.log(e);
-                                console.log(data);
-                            }',
+            console.log(data.result.success);
+            if (data.result.success) {
+                $("#profile-image-success").show();
+                $("#profile-image-fail").hide();
+                $("#profile-picture").attr("src",data.result.pictureUri);
+                } else {
+                    $("#profile-image-fail").html(data.result.errors.picture).show();
+                    $("#profile-image-success").hide();
+                }                    
+        }',
     ],
 ]); ?>
 
