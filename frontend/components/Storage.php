@@ -28,6 +28,22 @@ class Storage extends Component implements StorageInterface
         }
     }
 
+
+    /**
+     * @param $filename
+     * @return bool
+     */
+    public function deleteFile($filename)
+    {
+        $file = $this->getStoragePath().$filename;
+
+        if (file_exists($file)) {
+            // Если файл существует, удаляем
+            return unlink($file);
+        }
+        return true;
+    }
+
     /**
      * Prepare path to save uploaded file
      *
@@ -67,6 +83,7 @@ class Storage extends Component implements StorageInterface
     {
         return Yii::getAlias(Yii::$app->params['storagePath']);
     }
+
 
 
     public function getFile ($filename)

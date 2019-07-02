@@ -6,6 +6,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\HtmlPurifier;
+use yii\helpers\Url;
 use dosamigos\fileupload\FileUpload;
 
 ?>
@@ -19,7 +20,11 @@ use dosamigos\fileupload\FileUpload;
 
 
     <div class="pull-right">
-    <p style="font-weight: bold" class="text-danger text-nowrap"> <?php echo Html::encode($user->username); ?> <button class="btn btn-default">Редактировать профиль</button></p>
+    <p style="font-weight: bold" class="text-danger text-nowrap"> <?php echo Html::encode($user->username); ?>
+        <?php if($currentUser && $currentUser->equals($user)): ?>
+        <a href="<?php echo Url::to(['/user/profile/edit','nickname' => $user->getNickname()]) ?>" class="btn btn-default">Редактировать профиль</a>
+        <?php endif; ?>
+    </p>
 
 
 
@@ -54,30 +59,7 @@ use dosamigos\fileupload\FileUpload;
 <hr>
 <h1 align="center">Дневник тренировок</h1>
 
-<?= FileUpload::widget([
-    'model' => $modelPicture,
-    'attribute' => 'picture',
-    'url' => ['/user/profile/upload-picture'], // your url, this is just for demo purposes,
-    'options' => ['accept' => 'image/*'],
-        'clientOptions' => [
-        'maxFileSize' => 2000000,
-    ],
-    // Also, you can specify jQuery-File-Upload events
-    // see: https://github.com/blueimp/jQuery-File-Upload/wiki/Options#processing-callback-options
-    'clientEvents' => [
-        'fileuploaddone' => 'function(e, data) {
-            console.log(data.result.success);
-            if (data.result.success) {
-                $("#profile-image-success").show();
-                $("#profile-image-fail").hide();
-                $("#profile-picture").attr("src",data.result.pictureUri);
-                } else {
-                    $("#profile-image-fail").html(data.result.errors.picture).show();
-                    $("#profile-image-success").hide();
-                }                    
-        }',
-    ],
-]); ?>
+
 
 
 
